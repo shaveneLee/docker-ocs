@@ -53,7 +53,7 @@ RUN docker-php-ext-install xsl
 #RUN docker-php-ext-install ctype
 #RUN docker-php-ext-install dba
 #RUN docker-php-ext-install dom
-#RUN docker-php-ext-install zip
+RUN docker-php-ext-install zip
 #RUN docker-php-ext-install session
 RUN docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu
 RUN docker-php-ext-install ldap
