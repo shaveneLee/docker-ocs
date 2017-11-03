@@ -152,5 +152,12 @@ RUN curl 'https://ncu.dl.sourceforge.net/project/p7zip/p7zip/16.02/p7zip_16.02_s
     && rm 7zip.tar.bz2 \
     && cd p7zip_16.02 \
     && make \
-    && make install \
-    && rm -rf p7zip_16.02
+   && make install \
+    && rm -f p7zip_16.02
+RUN apt-get install -y rpm
+RUN mkdir -p /tmp/wk
+COPY ./wk/wkhtmltox-0.12.2.1_linux-jessie-amd64.deb /tmp/wk
+RUN apt-get install -y fontconfig libx11-6
+RUN apt-get install -y libxext6 libxrender1 xfonts-base xfonts-75dpi
+RUN dpkg -i /tmp/wk/wkhtmltox-0.12.2.1_linux-jessie-amd64.deb
+RUN rm -rf /tmp/wk
