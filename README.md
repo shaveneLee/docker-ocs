@@ -1,1 +1,1 @@
-Nginx + PHP(install with oci8 & yar extensions) + Redis
+Nginx + PHP(install with oci8 & yar & rdkafka extensions) + Redis
