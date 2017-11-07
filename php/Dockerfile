@@ -154,6 +154,7 @@ RUN curl 'https://ncu.dl.sourceforge.net/project/p7zip/p7zip/16.02/p7zip_16.02_s
     && make \
    && make install \
     && rm -f p7zip_16.02
+# install wkhtmltox
 RUN apt-get install -y rpm
 RUN mkdir -p /tmp/wk
 COPY ./wk/wkhtmltox-0.12.2.1_linux-jessie-amd64.deb /tmp/wk
@@ -161,3 +162,26 @@ RUN apt-get install -y fontconfig libx11-6
 RUN apt-get install -y libxext6 libxrender1 xfonts-base xfonts-75dpi
 RUN dpkg -i /tmp/wk/wkhtmltox-0.12.2.1_linux-jessie-amd64.deb
 RUN rm -rf /tmp/wk
+
+# install rdkafka
+RUN mkdir -p /tmp/kafka
+RUN cd /tmp/kafka \
+    rm -rf librdkafka-master
+RUN curl 'https://codeload.github.com/edenhill/librdkafka/zip/master' -o librdkafka-master.zip \
+    && unzip librdkafka-master.zip \
+    && cd librdkafka-master \ 
+    && ./configure \
+    && make \
+    && make install \
+    && ldconfig
+
+RUN cd /tmp/kafka
+RUN rm -rf php-rdkafka-master
+RUN curl 'https://codeload.github.com/arnaud-lb/php-rdkafka/zip/master' -o phpkafka-master.zip \
+    && unzip phpkafka-master.zip \
+    && cd php-rdkafka-master \
+    && /usr/local/bin/phpize \
+    && ./configure --enable-kafka --with-php-config=/usr/local/bin/php-config \
+    && make \
+    && make install
+RUN docker-php-ext-enable rdkafka
